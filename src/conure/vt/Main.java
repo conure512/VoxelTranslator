@@ -1,6 +1,7 @@
 package conure.vt;
 import java.io.File;
 import java.util.Scanner;
+/**Class containing main method*/
 final class Main {
 	static String directory;
 	static WindowConsole window=null;
