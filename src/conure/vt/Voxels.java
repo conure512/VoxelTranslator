@@ -20,6 +20,7 @@ final class Voxels {
 		interpreters.add(new STL());
 		interpreters.add(new NBT());
 		interpreters.add(new Schematic());
+		interpreters.add(new Particle_MCFunction());
 	}
 	static void loadExtensions() throws Exception {
 		File extFolder=new File("vt-extensions");
