@@ -8,12 +8,7 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
-import conure.vt.filetypes.Binvox;
-import conure.vt.filetypes.NBT;
-import conure.vt.filetypes.OBJ;
-import conure.vt.filetypes.STL;
-import conure.vt.filetypes.Schematic;
-import conure.vt.filetypes.Vox;
+import conure.vt.filetypes.*;
 final class Voxels {
 	static boolean[][][] array=null;
 	static final ArrayList<VoxFileInterpreter> interpreters;
@@ -46,7 +41,7 @@ final class Voxels {
 						if(VoxFileInterpreter.class.isAssignableFrom(c)) {
 							try {
 								VoxFileInterpreter vfi=(VoxFileInterpreter)c.getConstructor().newInstance();
-								Voxels.interpreters.add(vfi);
+								interpreters.add(vfi);
 								System.out.println("Loaded extension "+vfi.getExtension());
 							} catch(IllegalAccessException e) {
 								System.out.println("Load failed for class "+c.getSimpleName()+" - Constructor is inaccessible.");
@@ -76,7 +71,7 @@ final class Voxels {
 			}
 		}
 		boolean[][][] temp;
-		String[] args=argString.split(" ");
+		String[] args=parseArgs(argString.trim());
 		for(VoxFileInterpreter vfi:interpreters) if(vfi.getExtension().equals(ext)&&vfi.canLoad()) {
 			try {
 				temp=vfi.load(file,args);
@@ -112,7 +107,7 @@ final class Voxels {
 				return false;
 			}
 		}
-		String[] args=argString.split(" ");
+		String[] args=parseArgs(argString.trim());
 		for(VoxFileInterpreter vfi:interpreters) if(vfi.getExtension().equals(ext)&&vfi.canExport()) {
 			try {
 				if(vfi.export(array,file,args)) {
@@ -129,6 +124,18 @@ final class Voxels {
 		}
 		Global.println("Unrecognized file type.");
 		return false;
+	}
+	private static String[] parseArgs(String argString) {
+		ArrayList<Integer> breakPoints=new ArrayList<Integer>();
+		for(int i=argString.indexOf('-');i!=-1;i=argString.indexOf('-',i+1))
+			breakPoints.add(i);
+		if(breakPoints.size()==0)
+			return new String[0];
+		String[] args=new String[breakPoints.size()];
+		for(int i=0;i<args.length-1;i++)
+			args[i]=argString.substring(breakPoints.get(i),breakPoints.get(i+1)).trim();
+		args[args.length-1]=argString.substring(breakPoints.get(args.length-1));
+		return args;
 	}
 	private static boolean createWritablePath(File file) {
 		File parent=file.getParentFile();

@@ -1,18 +1,19 @@
 package conure.vt;
 import java.io.File;
 import java.util.Scanner;
-/**Class containing main method.*/
-final class Main {
+public final class Main {
 	static String directory;
 	static WindowConsole window=null;
 	static {
 		try {
-			directory=new File(Main.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParent()+File.separatorChar;
+			directory=new File(Main.class.getProtectionDomain().getCodeSource().getLocation().getPath()).getParent()+File.separatorChar;
 		} catch(Exception e) {
+			e.printStackTrace();
 			directory="";
 		}
 	}
 	public static void main(String[] args) {
+		System.setProperty("sun.java2d.uiScale","1");
 		try {
 			Voxels.loadExtensions();
 		} catch(Exception e) {
@@ -49,7 +50,7 @@ final class Main {
 						arg1=parser.next();
 						extra="";
 						while(parser.hasNext())
-							extra+=parser.next()+' ';
+							extra+=parser.next()+" ";
 						try {
 							Voxels.attemptLoad(arg1,directory,arg1.substring(arg1.lastIndexOf('.')),extra);
 						} catch(Exception e) {
@@ -67,7 +68,7 @@ final class Main {
 						arg1=parser.next();
 						extra="";
 						while(parser.hasNext())
-							extra+=parser.next()+' ';
+							extra+=parser.next()+" ";
 						try {
 							Voxels.attemptExport(arg1,directory,arg1.substring(arg1.lastIndexOf('.')),extra);
 						} catch(Exception e) {

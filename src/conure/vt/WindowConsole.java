@@ -175,7 +175,7 @@ class WindowConsole extends JFrame {
 			private void update() {
 				String ext=loadPath.getText();
 				try {
-					ext=ext.substring(ext.lastIndexOf('.'));
+					ext=ext.substring(ext.indexOf('.'));
 				} catch(Exception e) {
 					loadFormat.setSelectedIndex(0);
 					return;
@@ -202,7 +202,7 @@ class WindowConsole extends JFrame {
 			private void update() {
 				String ext=exportPath.getText();
 				try {
-					ext=ext.substring(ext.lastIndexOf('.'));
+					ext=ext.substring(ext.indexOf('.'));
 				} catch(Exception e) {
 					exportFormat.setSelectedIndex(0);
 					return;
